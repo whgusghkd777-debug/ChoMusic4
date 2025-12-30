@@ -1,22 +1,16 @@
 package com.mysite.sbb.music;
 
-import java.time.LocalDateTime;
-import java.util.List;
-import java.util.Set;
 import com.mysite.sbb.answer.Answer;
 import com.mysite.sbb.user.SiteUser;
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.Setter;
-import java.util.HashSet;  // 추가
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
-@Getter
-@Setter
 @Entity
 public class Music {
-    // Music.java에 추가
-private int votes = 0;
-
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -31,18 +25,54 @@ private int votes = 0;
     @Column(columnDefinition = "TEXT")
     private String content;
 
-    private String url; // 유튜브 URL
-    private String filePath; // 서버에 저장된 음악 파일 경로 (추가)
-    private String category;
+    private String url;
+
+    private String filePath;
+
+    private String thumbnailUrl;
+
     private LocalDateTime createDate;
 
-    @OneToMany(mappedBy = "music", cascade = CascadeType.REMOVE)
-    private List<Answer> answerList;
-    
     @ManyToOne
     private SiteUser author;
-    // Music.java 파일 안에 추가
-private String thumbnailUrl;
+
+    @OneToMany(mappedBy = "music", cascade = CascadeType.REMOVE)
+    private List<Answer> answerList = new ArrayList<>();
+
     @ManyToMany
-    private Set<SiteUser> voter; // 랭킹 시스템을 위한 추천인 리스트
+    private Set<SiteUser> voter = new HashSet<>();  // ★ 여기 초기화
+
+    // getter/setter (직접 작성 중이니 그대로)
+    public Integer getId() { return id; }
+    public void setId(Integer id) { this.id = id; }
+
+    public String getTitle() { return title; }
+    public void setTitle(String title) { this.title = title; }
+
+    public String getArtist() { return artist; }
+    public void setArtist(String artist) { this.artist = artist; }
+
+    public String getContent() { return content; }
+    public void setContent(String content) { this.content = content; }
+
+    public String getUrl() { return url; }
+    public void setUrl(String url) { this.url = url; }
+
+    public String getFilePath() { return filePath; }
+    public void setFilePath(String filePath) { this.filePath = filePath; }
+
+    public String getThumbnailUrl() { return thumbnailUrl; }
+    public void setThumbnailUrl(String thumbnailUrl) { this.thumbnailUrl = thumbnailUrl; }
+
+    public LocalDateTime getCreateDate() { return createDate; }
+    public void setCreateDate(LocalDateTime createDate) { this.createDate = createDate; }
+
+    public SiteUser getAuthor() { return author; }
+    public void setAuthor(SiteUser author) { this.author = author; }
+
+    public List<Answer> getAnswerList() { return answerList; }
+    public void setAnswerList(List<Answer> answerList) { this.answerList = answerList; }
+
+    public Set<SiteUser> getVoter() { return voter; }
+    public void setVoter(Set<SiteUser> voter) { this.voter = voter; }
 }
