@@ -13,7 +13,7 @@ public class WebConfig implements WebMvcConfigurer {
 
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
-        // 브라우저에서 /uploads/파일명.mp3 로 접근하면 
+        // 브라ウザ에서 /uploads/파일명.mp3 로 접근하면 
         // 실제 내 컴퓨터의 C:/sbb_uploads/music/ 폴더의 파일을 보여준다.
         registry.addResourceHandler("/uploads/**")
                 .addResourceLocations("file:///" + uploadPath);

@@ -29,6 +29,6 @@ public class UserService {
     }
 
     public SiteUser getUser(String username) {
-        return userRepository.findByUsername(username).orElse(null);
+        return userRepository.findByUsername(username).orElse(null);  // ★ orElse로 수정
     }
 }
