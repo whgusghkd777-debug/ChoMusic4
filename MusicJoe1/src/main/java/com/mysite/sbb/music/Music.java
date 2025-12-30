@@ -8,11 +8,16 @@ import com.mysite.sbb.user.SiteUser;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
+import java.util.HashSet;  // 추가
 
 @Getter
 @Setter
 @Entity
 public class Music {
+    // Music.java에 추가
+private int votes = 0;
+
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
@@ -33,7 +38,7 @@ public class Music {
 
     @OneToMany(mappedBy = "music", cascade = CascadeType.REMOVE)
     private List<Answer> answerList;
-
+    
     @ManyToOne
     private SiteUser author;
     // Music.java 파일 안에 추가

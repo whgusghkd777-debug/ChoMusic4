@@ -8,14 +8,18 @@ import org.springframework.stereotype.Component;
 @RequiredArgsConstructor
 @Component
 public class DataInitializer implements CommandLineRunner {
+
     private final UserService userService;
 
     @Override
-    public void run(String... args) {
-        // 관리자 계정이 없을 때만 생성
-        if (this.userService.getUser("admin") == null) {
-            this.userService.create("admin", "admin@musicjoe.com", "admin1234");
-            // 注意: UserService.create에서 어드민 권한을 부여하는 로직이 필요할 수 있습니다.
+    public void run(String... args) throws Exception {
+        // 관리자 계정이 없으면 생성 (아이디: admin, 비번: 1234)
+        if (userService.getUser("admin") == null) {
+            userService.create("admin", "admin@musicjoe.com", "1234");
+            System.out.println("=== 관리자 계정 생성 완료 ===");
+            System.out.println("아이디: admin");
+            System.out.println("비밀번호: 1234");
+            System.out.println("===============================");
         }
     }
 }

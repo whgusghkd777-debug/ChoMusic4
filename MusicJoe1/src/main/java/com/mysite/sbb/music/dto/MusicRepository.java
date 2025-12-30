@@ -5,5 +5,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.List;
 
 public interface MusicRepository extends JpaRepository<Music, Integer> {
+    
     List<Music> findAllByOrderByCreateDateDesc(); // 이 줄을 추가하세요!
 }

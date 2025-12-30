@@ -1,51 +1,19 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" 
-      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" 
-      layout:decorate="~{layout}">
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{layout}">
+<head>
+    <title>音楽リスト</title>
+</head>
 <section layout:fragment="content">
     <style>
-        .feed-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 40px;
-        }
-        .add-btn {
-            width: 56px;
-            height: 56px;
-            border-radius: 50%;
-            background: #007AFF;
-            color: white;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            text-decoration: none;
-            font-size: 32px;
-            box-shadow: 0 4px 15px rgba(0, 122, 255, 0.3);
-            transition: transform 0.2s;
-        }
+        .feed-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 40px; }
+        .add-btn { width: 56px; height: 56px; border-radius: 50%; background: #007AFF; color: white; display: flex; align-items: center; justify-content: center; text-decoration: none; font-size: 32px; box-shadow: 0 4px 15px rgba(0, 122, 255, 0.3); transition: transform 0.2s; }
         .add-btn:hover { transform: scale(1.1); }
-        .music-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-            gap: 25px;
-        }
-        .music-card {
-            background: white;
-            border-radius: 20px;
-            overflow: hidden;
-            border: 1px solid rgba(0,0,0,0.05);
-            transition: transform 0.3s;
-        }
+        .music-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 25px; }
+        .music-card { background: white; border-radius: 20px; overflow: hidden; border: 1px solid rgba(0,0,0,0.05); transition: transform 0.3s; cursor: pointer; }
         .music-card:hover { transform: translateY(-5px); box-shadow: 0 10px 30px rgba(0,0,0,0.08); }
         .thumb-box { width: 100%; height: 180px; background: #000; overflow: hidden; }
         .thumb-box img { width: 100%; height: 100%; object-fit: cover; }
-        .no-data {
-            grid-column: 1/-1;
-            text-align: center;
-            padding: 100px 0;
-            color: #86868B;
-        }
+        .no-data { grid-column: 1/-1; text-align: center; padding: 100px 0; color: #86868B; }
     </style>
 
     <div class="feed-header">
@@ -58,7 +26,7 @@
             <p style="font-size: 1.1rem;">共有された楽曲がまだありません。<br>右上のボタンから最初の曲を投稿しましょう！</p>
         </div>
 
-        <div th:each="music : ${musicList}" class="music-card">
+        <div th:each="music : ${musicList}" class="music-card" th:onclick="'playMusic(\'/files/' + ${music.filePath} + '\')'">
             <div class="thumb-box">
                 <img th:if="${music.thumbnailUrl}" th:src="${music.thumbnailUrl}" alt="thumbnail">
                 <div th:unless="${music.thumbnailUrl}" style="width:100%; height:100%; background:#eee; display:flex; align-items:center; justify-content:center; color:#ccc;">No Image</div>
@@ -68,7 +36,9 @@
                 <p th:text="${music.artist}" style="color: #86868B; margin-bottom: 20px; font-size: 0.95rem;"></p>
                 <div style="display: flex; justify-content: space-between; align-items: center;">
                     <a th:href="@{|/music/detail/${music.id}|}" style="color: #007AFF; text-decoration: none; font-weight: 600;">詳細を見る</a>
-                    <span style="color: #FF3B30; font-weight: 700;">❤️ <span th:text="${music.voteCount}">0</span></span>
+                    <button th:onclick="'vote(' + ${music.id} + '); event.stopPropagation();'" style="color: #FF3B30; font-weight: 700; border: none; background: none; cursor: pointer;">
+                        ❤️ <span id="vote-count-${music.id}" th:text="${#sets.size(music.voter)}">0</span>
+                    </button>
                 </div>
             </div>
         </div>
